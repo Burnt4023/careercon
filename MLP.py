@@ -76,8 +76,8 @@ def main():
         if val_acc > best_val_acc:
             best_val_acc = val_acc
     print(f"\nMejor accuracy en validación (MLP): {best_val_acc:.4f}")
-
-
+    
+    return model
 
 if __name__ == '__main__':
     main()

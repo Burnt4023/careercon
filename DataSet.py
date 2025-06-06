@@ -1,4 +1,3 @@
-
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
 import numpy as np
@@ -15,6 +14,7 @@ class CareerConDataset(Dataset):
     """
 
     def __init__(self, X_path, y_path, scaler=None):
+        
         super().__init__()
         # 1) Cargo etiquetas y factorizo
         y_df = pd.read_csv(y_path)
@@ -66,6 +66,7 @@ class CareerConDataset(Dataset):
         return self.vectors[idx], self.labels[idx]
     
 class MLPClassifier(nn.Module):
+    
     def __init__(self, input_dim, hidden_dims=[512, 256], num_classes=1, dropout=0.5):
         """
         input_dim: 128 * n_feats
