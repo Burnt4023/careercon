@@ -27,7 +27,7 @@ def main():
 
     print("==> Iniciando entrenamiento de SVM…")
     # Creamos el clasificador SVM (kernel RBF por defecto)
-    svm_model = SVC(kernel='rbf', C=1.0, gamma='scale', random_state=random_state)
+    svm_model = SVC(kernel='rbf', C=1.0, gamma='scale', random_state=random_state, probability=True)
 
     # Entrenamos
     svm_model.fit(X_train, y_train)
@@ -43,7 +43,8 @@ def main():
     print(f"\n  ▸ Train Acc: {train_acc:.4f} | Val Acc: {val_acc:.4f}")
     print(f"\nMejor accuracy en validación (SVM): {val_acc:.4f}")
     print("Entrenamiento finalizado. Modelo SVM listo para usarse.\n")
-
+    
+    return svm_model
 
 if __name__ == '__main__':
     main()
