@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from tqdm import tqdm
-
+import json
 
 class CareerConDataset(Dataset):
     """
@@ -21,13 +21,15 @@ class CareerConDataset(Dataset):
         cols = list(y_df.columns)
         if cols[0] != 'series_id':
             raise ValueError(f"Se esperaba primera columna 'series_id', pero es '{cols[0]}'")
-        label_col = cols[1]
+        label_col = 'surface' 
+        surfaces = y_df[label_col].values
 
         surfaces = y_df[label_col].values
         labels_factorized, uniques = pd.factorize(surfaces)
+        self.class_names = uniques.tolist()
+        self.class_mapping = list(enumerate(self.class_names))
         y_df['label_idx'] = labels_factorized
         self.num_classes = len(uniques)
-
         # 2) Cargo X_train y saco columnas de sensores
         X_df = pd.read_csv(X_path)
         sensor_cols = [c for c in X_df.columns if c not in ['row_id', 'series_id', 'measurement_number']]
@@ -64,6 +66,7 @@ class CareerConDataset(Dataset):
 
     def __getitem__(self, idx):
         return self.vectors[idx], self.labels[idx]
+
     
 class MLPClassifier(nn.Module):
     def __init__(self, input_dim, hidden_dims=[512, 256], num_classes=1, dropout=0.5):
